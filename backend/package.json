@@ -1,0 +1,17 @@
+{
+  "name": "proiect",
+  "version": "1.0.0",
+  "description": "proiect TW",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "moment-timezone": "^0.5.46",
+    "mysql2": "^3.12.0",
+    "sequelize": "^6.37.5"
+  }
+}
