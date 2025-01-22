@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function CreateEventGroup() {
-
+    
     return (
         <div className="create-event-group">
             <h2>Creare Grup de Evenimente</h2>

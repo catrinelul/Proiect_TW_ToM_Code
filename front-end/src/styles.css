@@ -8,7 +8,7 @@ h1 {
 	letter-spacing: -2px;
 	font-weight: bold;
 }
-h2 {
+h2,h4 {
     font-family: times, Times New Roman, times-roman, georgia, serif;
 	color: #444;
 	margin: 5px;
@@ -181,11 +181,11 @@ label {
     background-color: #c0f3cb;
 }
 
-.event-list {
+.group-list {
     margin-top: 20px;
 }
 
-.event-item {
+.group-item {
     display: flex;
     justify-content: space-between;
     align-items: center;

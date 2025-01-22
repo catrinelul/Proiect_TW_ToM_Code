@@ -1,5 +1,6 @@
 const express = require('express');
 const sequelize = require("./database.js");
+const cors = require('cors');
 
 require("./models/event.js");
 require("./models/User.js");
@@ -7,8 +8,11 @@ require("./models/group.js");
 require("./models/participant.js");
 
 
+
+
 const app = express();
-app.use(express.json())
+app.use(express.json());
+app.use(cors());
 
 // Preluare routers
 const userRoute = require("./routes/usersRoute.js");

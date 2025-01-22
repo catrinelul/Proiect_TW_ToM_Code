@@ -1,7 +1,8 @@
+
+const Event = require("../models/event");
 const Participant = require("../models/participant"); 
-
 const router = require("express").Router(); 
-
+const moment = require('moment');
 
 // CRUD pt Participant
 
@@ -16,15 +17,31 @@ router.get("/participant", async (req,res) => {
         }
     });
 
-    // create new participant
-router.post("/participant",async(req,res) => {
-        try {
-            const newParticipant = await Participant.create(req.body);
-            return res.status(200).json(newParticipant);
-        } catch(err) {
-            return res.status(500).json(err);
+    // create new participant for an event
+router.post("/participant", async(req,res) => {
+    try {
+        const { inputName, inputEventId } = req.body;
+
+        // verific existenta eveniment
+        const event = await Event.findByPk(inputEventId);
+
+        if (!event) {
+          return res.status(404).json( { error: 'Event not found'} );
         }
-    });
+
+        const currentTime = moment().format('HH:mm:ss');
+
+        const newParticipant = await Participant.create({
+            name : inputName, 
+            joinMoment : currentTime,
+            eventId : inputEventId
+        });
+
+        return res.status(200).json(newParticipant);
+    } catch(err) {
+        return res.status(500).json(err);
+    }
+});
 
     // get participant after id
 router.get("/participant/:id", async (req,res) => {
@@ -69,12 +86,12 @@ router.get("/participant/event/:eventId", async(req,res) => {
            where: { eventId : eventId }
         });
 
-        if(participants.length == 0) {
-            return res.status(250).json({mesaj : "Nu exista participanti pentru evenimentul dat"});
-        } else {
+        //if(participants.length == 0) {
+            //return res.status(250).json({mesaj : "Nu exista participanti pentru evenimentul dat"});
+        //} else {
             return res.status(200).json(participants);
 
-        }
+        //}
     } catch(err){
         return res.status(500).json(err);
     }
