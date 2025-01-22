@@ -6,6 +6,9 @@ export default function Home() {
     const goToLogin = () => {
             navigate("/login");
     }
+    const goToRegister = () => {
+      navigate("/register");
+}
     const handleParticipantAccess = async () => {
       //preluez din input codul
       const inputEventId = document.getElementById("inputEventCode").value;
@@ -50,7 +53,7 @@ export default function Home() {
                 <button id="btnLogIn" className="btn" onClick={goToLogin}>
                     Log in
                 </button>
-                <button id="btnRegister" className="btn">
+                <button id="btnRegister" className="btn" onClick={goToRegister}>
                     Register
                 </button>
             </div>

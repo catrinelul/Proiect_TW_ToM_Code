@@ -40,9 +40,12 @@ export default function Login() {
             if(response.ok) {
 
                 if(data && data.idUser) {
-
-                    setMessage(`Log in successfull: ${data.username}`);
-                    navigate("/eventManager", { state: { idUser: data.idUser } });
+                    setMessage("Autentificare reușită! Redirecționare către pagina principală...");
+                    //setMessage(`Log in successfull: ${data.username}`);
+                    //navigate("/eventManager", { state: { idUser: data.idUser } });
+                    setTimeout(() => {
+                        navigate("/eventManager", { state: { idUser: data.idUser } }); // Redirecționare către pagina principală
+                    }, 2000);
                     return;
 
                 } else {
@@ -90,7 +93,7 @@ export default function Login() {
                 </div>
                 <button type="submit" className="btn" id="btnLogin" onClick={handleLogIn}>Log in</button>
             </form>
-            {message && <p className="message">{message}</p>} {/* Mesaj feedback */}
+            {message && <p className="message">{message}</p>}
         </div>
     );
 }
