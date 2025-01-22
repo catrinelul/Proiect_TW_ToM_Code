@@ -26,7 +26,7 @@ router.post("/participant", async(req,res) => {
         const event = await Event.findByPk(inputEventId);
 
         if (!event) {
-          return res.status(404).json( { error: 'Event not found'} );
+          return res.status(404).json( { error: 'Evenimentul nu exista!'} );
         }
 
         const currentTime = moment().format('HH:mm:ss');

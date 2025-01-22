@@ -41,8 +41,7 @@ export default function Login() {
 
                 if(data && data.idUser) {
                     setMessage("Autentificare reușită! Redirecționare către pagina principală...");
-                    //setMessage(`Log in successfull: ${data.username}`);
-                    //navigate("/eventManager", { state: { idUser: data.idUser } });
+                    
                     setTimeout(() => {
                         navigate("/eventManager", { state: { idUser: data.idUser } }); // Redirecționare către pagina principală
                     }, 2000);

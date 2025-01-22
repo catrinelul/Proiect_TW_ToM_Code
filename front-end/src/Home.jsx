@@ -1,7 +1,10 @@
 import React from "react";
+import {useState} from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+    const [message, setMessage] = useState("");
+
     const navigate = useNavigate();
     const goToLogin = () => {
             navigate("/login");
@@ -36,7 +39,7 @@ export default function Home() {
         const data = await response.json();
 
         if (response.ok) {
-          setMessage(`Successfully joined the event: ${data.participant.name}`);
+          setMessage(`Sunteti prezent la eveniment!`);
         } else {
           setMessage(data.error || 'An error occurred');
         }
@@ -65,6 +68,7 @@ export default function Home() {
                 <button id="btnJoinEvent" className="btn" onClick={handleParticipantAccess}>Join</button>
                 <br />
             </div>
+            {message && <p className="message">{message}</p>}
         </div>
     );
 }

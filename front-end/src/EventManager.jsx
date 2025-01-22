@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate,  useLocation } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
 import {getAllGroups, getParticipantsFromEvent, getGroupsFromUserId, getGroupsFromGroupId, getEventsFromGroupEvent} from "./stores/API"
+import * as XLSX from "xlsx";
 
 export default function EventManager() {
     const navigate = useNavigate();
@@ -72,9 +73,55 @@ export default function EventManager() {
     }
 
     // functie export csv
-
+    const handleExportParticipantsToCsv = (participants) => {
+        if (participants.length === 0) {
+            alert("Nu există participanți pentru acest eveniment.");
+            return;
+        }
+    
+        // Crearea antetului și a datelor participanților
+        const headers = ["Nume", "Moment alăturare"];
+        const rows = participants.map((participant) => [participant.name, participant.joinMoment]);
+    
+        // Crearea conținutului CSV
+        const csvContent = [
+            headers.join(","), // Adăugăm antetul
+            ...rows.map((row) => row.join(",")) // Adăugăm fiecare rând
+        ].join("\n");
+    
+        // Crearea unui blob și descărcarea fișierului
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+    
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `participanti_event_${selectedEvent?.name || "necunoscut"}.csv`;
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
     //  functie export xlsx
-
+    const handleExportParticipantsToXlsx = (participants) => {
+        if (participants.length === 0) {
+            alert("Nu există participanți pentru acest eveniment.");
+            return;
+        }
+    
+        // Crearea unui array de obiecte cu datele participanților
+        const data = participants.map((participant) => ({
+            Nume: participant.name,
+            "Momentul intrării": participant.joinMoment,
+        }));
+    
+        // Crearea unui workbook și a unui sheet
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Participanți");
+    
+        // Exportul către un fișier Excel
+        XLSX.writeFile(workbook, `participanti_event_${selectedEvent?.name || "necunoscut"}.xlsx`);
+    };
     return (
         <div className="event-manager">
             <div className="sidebar">
@@ -108,7 +155,7 @@ export default function EventManager() {
                     <div>
                         <h2>Detalii eveniment</h2>
                         <p><strong>Nume:</strong> {selectedEvent.name}</p>
-                        <p><strong>Data:</strong> {selectedEvent.date}</p>
+                        <p><strong>Data:</strong> {selectedEvent.date.split("T")[0]}</p>
                         <p><strong>Timp incepere:</strong> {selectedEvent.startTime}</p>
                         <p><strong>Timp incheiere:</strong> {selectedEvent.endTime}</p>
                         <p><strong>Status:</strong> {selectedEvent.isOpened?"OPEN":"CLOSED"}</p>
@@ -124,8 +171,8 @@ export default function EventManager() {
                                 ))}
                             </ul> )
                         }
-                        <button className="btn" onClick={() => alert("Export CSV")}>Export CSV</button>
-                        <button className="btn" onClick={() => alert("Export XLSX")}>Export XLSX</button>
+                        <button className="btn" onClick={() => handleExportParticipantsToCsv(participants)}>Export CSV</button>
+                        <button className="btn" onClick={() => handleExportParticipantsToXlsx(participants)}>Export XLSX</button>
                     </div>
                 ) : selectedGroup  ? (
                     <div>
