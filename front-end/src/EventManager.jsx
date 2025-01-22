@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,  useLocation } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
 import {getAllGroups, getParticipantsFromEvent, getGroupsFromUserId, getGroupsFromGroupId, getEventsFromGroupEvent} from "./stores/API"
 
 export default function EventManager() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const idUser = location.state?.idUser; 
+
+    /*useEffect(() => {
+        if (!idUser) {
+            console.error('ID-ul utilizatorului nu a fost transmis.');
+        }
+    }, [idUser]);*/
 
     useEffect(() => {
         const loadGroups = async () => {
-          const data = await getAllGroups();
+          const data = await getGroupsFromUserId(idUser);
           setGroups(data);
         };
         loadGroups();
@@ -39,7 +47,7 @@ export default function EventManager() {
         setSelectedGroup(group);
         const loadEvents = async () => {
             const data = await getEventsFromGroupEvent(group.idGroup);
-            setEvents(data);
+            setEvents(Array.isArray(data) ? data : []);
         };
         loadEvents();
         setSelectedEvent(null);
@@ -56,11 +64,11 @@ export default function EventManager() {
     };
     
     const goToCreateEvent = (groupId) => {
-        navigate("/createEvent", { state: { groupId } });
+        navigate("/createEvent", { state: { groupId , idUser} });
     };
 
     const goToCreateGroupEvent = () => {
-        navigate("/createGroupEvent")
+        navigate("/createGroupEvent", {state: {idUser}});
     }
 
     // functie export csv
@@ -144,6 +152,7 @@ export default function EventManager() {
                                 </React.Fragment>
                             ))}
                         </ul>
+                        
                     </div>
                 ) : (
                     <p>Selectați un grup pentru a vedea detaliile.</p>

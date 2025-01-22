@@ -7,6 +7,7 @@ export default function CreateEvent() {
     const location = useLocation();
     const navigate = useNavigate();
     const groupId = location.state?.groupId; // Obține ID-ul grupului
+    const idUser = location.state?.idUser;
 
     const [eventData, setEventData] = useState({
         name: "",
@@ -40,7 +41,7 @@ export default function CreateEvent() {
                   'Content-Type': 'application/json'
                 }
             })
-            navigate("/eventManager"); // Redirecționează utilizatorul înapoi
+            navigate("/eventManager",{state: {idUser}}); // Redirecționează utilizatorul înapoi
             return await response.json();
         } catch (error) {
             console.warn(error);

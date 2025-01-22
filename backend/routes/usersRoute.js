@@ -59,5 +59,24 @@ router.put("/user/:id", async(req,res) => {
         }
     });
 
+// get user id for username and password inserted 
+router.post("/logUser", async(req, res) => {
+    try {
+        const { inputUsername, inputPassword } = req.body;
+
+        const user = await User.findOne({
+            where : {
+                username : inputUsername, 
+                password : inputPassword
+            }
+        })
+
+        return res.status(200).json(user);
+
+    } catch(err) {
+        return res.status(500).json(err);
+    }
+});
+
 module.exports = router;
 
