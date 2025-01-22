@@ -34,7 +34,8 @@ const Event = sequelize.define('event', {
         references: {
             model: "groups",
             key: "idGroup"
-        }
+        },
+        onDelete: "CASCADE"
     }
 })
 

@@ -22,6 +22,7 @@ const Participant = sequelize.define('participant', {
             model: "events",
             key: "idEvent"
         },
+        onDelete: "CASCADE"
     }
 })
 

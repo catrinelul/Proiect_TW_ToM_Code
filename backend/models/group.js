@@ -17,7 +17,8 @@ const Group = sequelize.define('group', {
         references: {
             model: "users",
             key: "idUser"
-        }
+        },
+        onDelete: "CASCADE"
     }
 })
 
